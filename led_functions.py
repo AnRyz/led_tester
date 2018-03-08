@@ -1,8 +1,8 @@
+import re # we import Regex
 
 ##########################################
-# This file contains led functions
+# This part of file contains led functions
 ###########################################
-
 
 #
 # This function counts all leds that are on. We just go 
@@ -53,7 +53,38 @@ def InvertLed (L,  x1, y1, x2, y2, arrSize):
                 L[i][j] = True
     return L
     
+
+
+##########################################
+# This part of file contains test functions
+###########################################
+
+# This function prints and checks result 
+# of test
+def CheckTest(i, res, succVal):
+    print ("Test ", i, ":  Sum=", res)    
+    if  res == succVal:
+        print ("pass")
+    else:
+        print("FAIL")
+    return
+
+# Function has series of tests
+def TestLed(L, arraySize):
+    # Set some leds on/off
+    L = SwitchOnOffLed (L, 0,0, 5,3, arraySize, True)  # 24 leds are on
+    CheckTest(1, SumLed(L, arraySize), 24)
     
+    L = SwitchOnOffLed(L, 0,0, 2,2, arraySize, False) # 9 leds are off
+    CheckTest(2, SumLed(L, arraySize), 15)
+    
+    #invert some leds
+    L = InvertLed(L, 0,0, 9,9, arraySize) # 100 leds are inverted
+    CheckTest(3, SumLed(L, arraySize), 85)
+
+    return L
+
+
 # 
 # main program   
 #############################
@@ -64,14 +95,7 @@ arraySize = 10  # our max array size
 L = [[False for x in range(arraySize)] for y in range(arraySize)]    
 
 # Now let's do some tests:
+TestLed(L, arraySize)
 
-# Set some leds on/off
-L = SwitchOnOffLed (L, 0,0, 5,3, arraySize, True)  # 24 leds are on
-print ("1. Summ: ", SumLed(L, arraySize))    
 
-L = SwitchOnOffLed(L, 0,0, 2,2, arraySize, False) # 9 leds are off
-print ("2. Summ: ", SumLed(L, arraySize))   # should print "15"
 
-#invert some leds
-L = InvertLed(L, 0,0, 9,9, arraySize) # 100 leds are inverted
-print ("3. Summ: ", SumLed(L, arraySize))   # should print "85"

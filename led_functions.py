@@ -1,6 +1,10 @@
 import re   # we import Regex
 import sys  # for reading command line arguments
-import urllib2 #for working with URL
+#for working with URL
+try:
+	from urllib.request import urlopen 
+except ImportError:
+	from urllib2 import urlopen
 
 ##########################################
 # This part of file contains led functions
@@ -136,7 +140,7 @@ if (len (sys.argv) == 3
 
 	# check if such URL/file exists 	
 	try:
-		f = urllib2.urlopen(sys.argv[2])
+		f = urlopen(sys.argv[2])
 		#
 		# lets read file line by line
 		#		1) first line is always  max number for Leds size. so we interpret it differently

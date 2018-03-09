@@ -1,12 +1,15 @@
-Sample Module Repository
+(c) Anna Ryzova, 2018
 ========================
 
-This simple project is an example repo for Python projects.
+LED lights Testing
 
-`Learn more <http://www.kennethreitz.org/essays/repository-structure-and-python>`_.
+This is a Python project to test the LED lights on a grid board and determine how many of them are on and off.
 
----------------
+The code checks the existance of the file, checks the errors and ignores any commands which are not on, off or switch.
+For the areas outside the gird still executed but only for the region of lights inside the boundary of the grid.
 
-If you want to learn more about ``setup.py`` files, check out `this repository <https://github.com/kennethreitz/setup.py>`_.
+Samplemod structure is used for the project.
+Github and Eclipse used as a remote repository.
 
-✨🍰✨
+
+

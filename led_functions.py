@@ -1,6 +1,6 @@
 import re   # we import Regex
 import sys  # for reading command line arguments
-import os   # for filesystem
+import urllib2 #for working with URL
 
 ##########################################
 # This part of file contains led functions
@@ -134,51 +134,52 @@ print("\n\nLED functions program. (c) Anna Ryzova, 2018.\n")
 if (len (sys.argv) == 3 
 	and sys.argv[1] == "--input"):
 
-	# check if such file exists 	
-	if (os.path.exists(str(sys.argv[2]))):
+	# check if such URL/file exists 	
+	try:
+		f = urllib2.urlopen(sys.argv[2])
 		#
 		# lets read file line by line
 		#		1) first line is always  max number for Leds size. so we interpret it differently
 		#       2) the rest is just read->parse
 		counter = 1
 		result  = 0
-		with open(sys.argv[2]) as f:
-			content = f.readlines()
-			for line in content: 
-				line = line.strip()
-				#expect a number
-				if (counter == 1):
-					arraySize =  int(line) # our max array size
-					print("Reading LED board size:", arraySize)
-					
-					if (arraySize <=0 or arraySize >= 1e9):
-						print("Wrong board size. Can't continue. Quit!");
-					else:
-						print("Initializing LED module...")
-
-						# NOTE, L is our array. We declare it as 2D and init with "False"
-						L = [[False for x in range(arraySize)] for y in range(arraySize)]    
-
-						# Now let's do some internal tests:
-						print("\nRun LED functions tests")
-						TestLed(L, arraySize)
-						TestParser(L, arraySize)
-						
-						# we good to go		
-						print("\n\nStart parsing...")
+		#with open(sys.argv[2]) as f:
+		#	content = f.readlines()
+		for line in f: 
+			line = line.strip()
+			#expect a number
+			if (counter == 1):
+				arraySize =  int(line) # our max array size
+				print("Reading LED board size:", arraySize)
+				
+				if (arraySize <=0 or arraySize >= 1e9):
+					print("Wrong board size. Can't continue. Quit!");
 				else:
-					# lets just parse string			
-					ParseString(counter - 1, line, arraySize)
-					result = SumLed(L, arraySize)
-					print("\t\tSumLed = ", result)
+					print("Initializing LED module...")
+
+					# NOTE, L is our array. We declare it as 2D and init with "False"
+					L = [[False for x in range(arraySize)] for y in range(arraySize)]    
+
+					# Now let's do some internal tests:
+					print("\nRun LED functions tests")
+					TestLed(L, arraySize)
+					TestParser(L, arraySize)
 					
-				counter +=1
+					# we good to go		
+					print("\n\nStart parsing...")
+			else:
+				# lets just parse string			
+				ParseString(counter - 1, line, arraySize)
+				result = SumLed(L, arraySize)
+				print("\t\tSumLed = ", result)
+				
+			counter +=1
 		print("\nFinished parsing")
 		print("Solution : ", result)
-	else:
-		print("File doesn't exists!") 
+	except:
+		print("Can't open target:",str(sys.argv[2])) 
 else:
-	print("\tUsage   : led_functions.py --input <finput file name or link>")
-	print("\tEXAMPLE : led_functions --input shorttest.txt\n")
+	print("\tUsage   : led_functions.py --input <input URL link to txt file>")
+	print("\tEXAMPLE : led_functions --input https://raw.githubusercontent.com/AnRyz/led_tester/master/tests/shorttest.txt\n")
 
 print("\n\nHave a nice day!")
